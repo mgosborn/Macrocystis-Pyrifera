@@ -12,18 +12,43 @@ import subprocess
 
 #metaxa2 -1 [first] -2 [second] -o [outputname] -f p --cpu 12 --plus T
 
-TaxaLevel = "6"
+# TaxaLevel = "7"
 # Kingdom/Domain (1), Phylum (2), Class (3), Order (4), Family (5), Genus (6) and Species (7)
 
 print("Starting...")
+
+print("Removing temporary files leftover from halted metaxa2 run...")
+cmd = "rm -rf metaxa_temp_*"
+os.system(cmd)
 
 print("Creating list of unmaped fqs in folder...")
 cmd = "ls unmapped*_1.fq > files.txt"
 os.system(cmd)
 
-print("Grabbing file names...")
+print("Creating list of samples already done...")
+cmd = "ls *level_8* > temp.txt"
+os.system(cmd)
 
-with open('files.txt', 'r') as files:
+with open('temp.txt','r') as temps:
+    with open('done.txt','w') as dones:
+        for temp in temps:
+            temp_stripped = temp.strip()
+            temp_name = temp_stripped.rsplit('.level',1)[0]
+            temp_temp = temp_name.strip("metaxa2_")
+            temp_matchname = temp_temp + '_1.fq\n'
+            dones.write(temp_matchname)
+        dones.close()
+    temps.close()
+os.remove("temp.txt")
+
+print("Ignoring files already done...")
+
+cmd = "grep -xvf done.txt files.txt > remaining.txt"
+os.system(cmd)
+
+print("Made list of remaining files to run metaxa2 on.")
+
+with open('remaining.txt', 'r') as files:
     for file in files:
         file_stripped = file.strip() #get rid of any trailing/leading white space
         file_name = file_stripped.rsplit('_',1)[0] #grab file name
@@ -34,12 +59,13 @@ with open('files.txt', 'r') as files:
         os.system(cmd)
         print("Counting taxa in " + file_name)
         cmd = "metaxa2_ttt -i " + metaxa2output_name + ".taxonomy.txt -o " + metaxa2output_name
+        print(cmd)
         os.system(cmd)
     files.close()
 
-print("Creating consensus abundance table...")
-cmd = "metaxa2_dc -o AbundanceTable.txt -p \"^...\" *level_" + TaxaLevel + ".txt"
-print(cmd)
-os.system(cmd)
-
-
+#print("Creating consensus abundance table...")
+## COMMAND: metaxa2_dc -o AbundanceTable.txt -r "metaxa2_unmapped_" -p "^[^.]+" *level_7.txt
+## string after "-p" indicates sample name in matrix should be everything before the first dot in the filename" 
+#cmd = "metaxa2_dc -o AbundanceTable.txt -r \"metaxa2_unmapped_\" -p \"^[^.]+\" *level_" + TaxaLevel + ".txt"
+#print(cmd)
+#os.system(cmd)

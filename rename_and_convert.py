@@ -52,11 +52,11 @@ for line in ListOfReeads: #for each fq filename in list of reads
         files.close()
     
     print("Converting FWD fq to fa (seqtk)...")
-    cmd = "seqtk sub -a " + FWDfq + " > " + FWDallreadsNewFilename
+    cmd = "seqtk seq -a " + FWDfq + " > " + FWDallreadsNewFilename
     os.system(cmd)
 
     print("Converting REV fq to fa (seqtk)...")
-    cmd = "seqtk sub -a " + REVfq + " > " + REVallreadsNewFilename
+    cmd = "seqtk seq -a " + REVfq + " > " + REVallreadsNewFilename
     os.system(cmd)
 
     print("Done. Next:")
@@ -69,5 +69,5 @@ os.system(cmd)
 cmd = "mv allreads*fa > renamed_allreads_fa"
 os.system(cmd)
 
-cmd = "mv list_of_renamed_allreads_fa.txt"
+cmd = "mv list_of_renamed_allreads_fa.txt > renamed_allreads_fa"
 os.system(cmd)

@@ -47,7 +47,7 @@ for line in ListOfReeads: #for each fq filename in list of reads
     FWDallreadsNewFilename = 'allreads_' + str(sample_id) + '_' + str(indexNum) + '_' + str(lane) + '_' + str(read) + '_1.fa'
     REVallreadsNewFilename = 'allreads_' + str(sample_id) + '_' + str(indexNum) + '_' + str(lane) + '_' + str(read) + '_2.fa'
 
-    with open('list_of_renamed_allreads_fa.txt', 'w') as files: #keep track of new files
+    with open('list_of_renamed_allreads_fa.txt', 'a') as files: #keep track of new files
         files.write(FWDallreadsNewFilename)
         files.close()
     

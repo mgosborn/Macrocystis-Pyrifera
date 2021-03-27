@@ -34,7 +34,7 @@ with open('temp.txt','r') as temps:
         for temp in temps:
             temp_stripped = temp.strip()
             temp_name = temp_stripped.rsplit('.level',1)[0]
-            temp_temp = temp_name.strip("metaxa2_")
+            temp_temp = temp_name.replace("metaxa2_","")
             temp_matchname = temp_temp + '_1.fa\n'
             dones.write(temp_matchname)
         dones.close()

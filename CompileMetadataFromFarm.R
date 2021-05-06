@@ -96,15 +96,14 @@ row.names(metadata) <- metadata$SampleName
 
 ## Rank quantitative phenotype values.  
 
-metadata$Total_Biomass_Rank <- ifelse(metadata$average_plant_biomass > summary(metadata$average_plant_biomass)[5], paste("Top 25% (> ",round(summary(metadata$average_plant_biomass)[5],2),"g)", sep = ""),
-                                      ifelse(metadata$average_plant_biomass < summary(metadata$average_plant_biomass)[2], paste("Bottom 25% (< ",round(summary(metadata$average_plant_biomass)[2],2),"g)", sep = ""), "Middle 50%"))
+metadata$Total_Biomass_Rank <- ifelse(metadata$average_total_biomass > summary(metadata$average_total_biomass)[5], paste("Top 25% (> ",round(summary(metadata$average_total_biomass)[5],2),"g)", sep = ""),
+                                      ifelse(metadata$average_total_biomass < summary(metadata$average_total_biomass)[2], paste("Bottom 25% (< ",round(summary(metadata$average_total_biomass)[2],2),"g)", sep = ""), "Middle 50%"))
 metadata$Blade_Rank <- ifelse(metadata$average_blade_weight > summary(metadata$average_blade_weight)[5], paste("Top 25% (> ",round(summary(metadata$average_blade_weight)[5],2),"g)", sep = ""),
                               ifelse(metadata$average_blade_weight < summary(metadata$average_blade_weight)[2], paste("Bottom 25% (< ",round(summary(metadata$average_blade_weight)[2],2),"g)", sep = ""), "Middle 50%"))
-metadata$Stipe_Rank <- ifelse(metadata$average_Stipe_weight > summary(metadata$average_Stipe_weight)[5], paste("Top 25% (> ",round(summary(metadata$average_Stipe_weight)[5],2),"g)", sep = ""),
-                              ifelse(metadata$average_Stipe_weight < summary(metadata$average_Stipe_weight)[2], paste("Bottom 25% (< ",round(summary(metadata$average_Stipe_weight)[2],2),"g)", sep = ""), "Middle 50%"))
+metadata$Stipe_Rank <- ifelse(metadata$average_stipe_weight > summary(metadata$average_stipe_weight)[5], paste("Top 25% (> ",round(summary(metadata$average_stipe_weight)[5],2),"g)", sep = ""),
+                              ifelse(metadata$average_stipe_weight < summary(metadata$average_stipe_weight)[2], paste("Bottom 25% (< ",round(summary(metadata$average_stipe_weight)[2],2),"g)", sep = ""), "Middle 50%"))
 metadata$Chla_Rank <- ifelse(metadata$average_chla > summary(metadata$average_chla)[5], paste("Top 25% (> ",round(summary(metadata$average_chla)[5],2),")", sep = ""),
                               ifelse(metadata$average_chla < summary(metadata$average_chla)[2], paste("Bottom 25% (< ",round(summary(metadata$average_chla)[2],2),")", sep = ""), "Middle 50%"))
 
 
-write.csv(metadata, "050521_metadata.csv")
-
+write.csv(metadata, "050621_metadata.csv")

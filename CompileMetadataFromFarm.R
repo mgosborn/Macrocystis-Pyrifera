@@ -2,7 +2,7 @@ library(dplyr)
 library(tidyr)
 library(tidyverse)
 
-setwd("/Users/Mel/Desktop")
+setwd("/Users/Mel/Desktop/Artemis/Kelp Microbiome")
 
 ## This script takes four input files: 
 ## (1) Code_SamplesDNA_for_SNPs.csv (Gametophyte Code & Sample ID), 
@@ -12,9 +12,7 @@ setwd("/Users/Mel/Desktop")
 ## ... to generate a single metadata file that can be combined with a phyloseq object for future analysis.
 
 ## TO GENERATE LIST OF SAMPLE NAMES FROM METAXA2 OUTPUT (names.txt):
-# Navigate to output directory
-# First Set: /project/noujdine_61/mgosborn/Gametophytes/trimmed_reads_fastp/renamed_allreads_fa/level_7_output
-# Second Set: TBD
+# Navigate to output directory: /project/noujdine_61/mgosborn/Gametophytes/allreads_level7_output
 # List of files for the first set will be in format: metaxa2_allreads_101_507_L01_FP100000947BR.level_7.txt
 # type: ls *level_7* > allreads_names.txt
 
@@ -38,7 +36,6 @@ colnames(names)[1] <- "SampleName" #rename first column
 pops <- read.csv("Code_SamplesDNA_for_SNPs.csv", header = TRUE)
 
 pheno <- read.csv("Harvest_data.csv", header = TRUE, stringsAsFactors = FALSE)
-#names(pheno)[names(pheno)=="Farm_code"] <- "SampleID"
 pheno[ pheno == "." ] <- NA
 temp <- c("Blade_weight","Stipe_weight")
 pheno[temp] <- sapply(pheno[temp],as.numeric)
@@ -62,8 +59,6 @@ avg <- pheno %>% # average the top 3 values (if available, otherwise the average
   summarize(average_total_biomass=mean(Total_Biomass))
 pheno <- merge(pheno,avg, by = "Farm_code", all = TRUE)
 rm(avg)
-
-#rm(pheno)
 
 ## Chlorophyll A data
 chla <- read.csv("Plant_Chl.csv", header = TRUE)
@@ -102,8 +97,8 @@ metadata$Blade_Rank <- ifelse(metadata$average_blade_weight > summary(metadata$a
                               ifelse(metadata$average_blade_weight < summary(metadata$average_blade_weight)[2], paste("Bottom 25% (< ",round(summary(metadata$average_blade_weight)[2],2),"g)", sep = ""), "Middle 50%"))
 metadata$Stipe_Rank <- ifelse(metadata$average_stipe_weight > summary(metadata$average_stipe_weight)[5], paste("Top 25% (> ",round(summary(metadata$average_stipe_weight)[5],2),"g)", sep = ""),
                               ifelse(metadata$average_stipe_weight < summary(metadata$average_stipe_weight)[2], paste("Bottom 25% (< ",round(summary(metadata$average_stipe_weight)[2],2),"g)", sep = ""), "Middle 50%"))
-metadata$Chla_Rank <- ifelse(metadata$average_chla > summary(metadata$average_chla)[5], paste("Top 25% (> ",round(summary(metadata$average_chla)[5],2),")", sep = ""),
-                              ifelse(metadata$average_chla < summary(metadata$average_chla)[2], paste("Bottom 25% (< ",round(summary(metadata$average_chla)[2],2),")", sep = ""), "Middle 50%"))
+metadata$Chla_Rank <- ifelse(metadata$average_chla > summary(metadata$average_chla)[5], paste("Top 25% (> ",round(summary(metadata$average_chla)[5],2),"nmol/g)", sep = ""),
+                              ifelse(metadata$average_chla < summary(metadata$average_chla)[2], paste("Bottom 25% (< ",round(summary(metadata$average_chla)[2],2),"nmol/g)", sep = ""), "Middle 50%"))
 
 
-write.csv(metadata, "050621_metadata.csv")
+write.csv(metadata, "051721_metadata.csv")

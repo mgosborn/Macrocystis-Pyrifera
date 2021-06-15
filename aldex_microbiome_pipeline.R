@@ -160,14 +160,14 @@ levels <- c("Phylum","Class","Order","Family","Genus","Species")
 
 for(level in levels){
   #Use CLR to transform abundance table from counts to variance of each taxa relative to geometric mean of all taxa
-  temp = tax_glom(physeq_merged_ancom, level)
+  temp = tax_glom(physeq_merged, level)
   ##Use command below if want to investigate top half most abundant taxa
   #temp = prune_taxa(names(sort(taxa_sums(temp), TRUE))[1:round(ncol(temp@otu_table)/2)], temp)
   temp_no_trans <- temp # save for alpha div, zeta div, spieceasi, and aldex2 later on
   #subset for top and bottom quartiles based on biomass
   top25_no_trans <- subset_samples(temp_no_trans, Total_Biomass_Rank == sort(unique(temp_no_trans@sam_data[["Total_Biomass_Rank"]]))[2])
   bottom25_no_trans <- subset_samples(temp_no_trans, Total_Biomass_Rank == sort(unique(temp_no_trans@sam_data[["Total_Biomass_Rank"]]))[1])
-  #temp <- microbiome::transform(temp, 'clr')
+  temp <- microbiome::transform(temp, 'clr')
   
   ###################
   ###
